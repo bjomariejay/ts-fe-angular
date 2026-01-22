@@ -2,17 +2,16 @@ import { Component, signal } from '@angular/core';
 import { HeaderComponent } from './components/header-component/header-component';
 import { FooterComponent } from './components/footer-component/footer-component';
 import { RouterOutlet } from '@angular/router';
-import { HomeComponent } from './components/home-component/home-component';
 
 @Component({
   selector: 'app-root',
-  imports: [HeaderComponent, FooterComponent, HomeComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent],
   // templateUrl: './app.html',
   styleUrl: './app.css',
   template: `
-    <app-header-component/>
+     <app-header-component/>
     <main >
-      <app-home-component/>
+      <router-outlet/>
     </main>
     <app-footer-component/>
 
