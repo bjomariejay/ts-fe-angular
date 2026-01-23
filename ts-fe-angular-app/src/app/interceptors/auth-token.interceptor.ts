@@ -5,7 +5,6 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const token = getStoredToken();
 
   if (!token) {
-    alert(12121)
     return next(req);
   }
 
