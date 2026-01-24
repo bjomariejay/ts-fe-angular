@@ -3,11 +3,13 @@ import { LoginPageComponent } from './components/login/login-page.component';
 import { HomeComponent } from './components/home-component/home-component';
 import { TodosComponent } from './components/todos-component/todos-component';
 import { authGuard } from './guards/auth.guard';
+import { ManageUserComponent } from './components/manage-user-component/manage-user-component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LoginPageComponent },
   { path: 'home', canMatch: [authGuard], component: HomeComponent },
   { path: 'todos', canMatch: [authGuard], component: TodosComponent },
+   {path: 'manage-user', canMatch:[authGuard], component: ManageUserComponent},
   { path: '**', redirectTo: 'login' }
 ];
