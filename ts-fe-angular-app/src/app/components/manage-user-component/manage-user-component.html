@@ -1,8 +1,199 @@
 <app-header-component/>
 
 <section class="max-w-6xl mx-auto p-6">
-  <h1 class="text-2xl font-semibold mb-4">Home</h1>
-  <p>manage-user-component works!</p>
+
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Header -->
+  <div class="max-w-6xl mx-auto mb-6">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Manage Users</h1>
+        <p class="text-sm text-gray-600 mt-1">
+          View, create, update, and delete accounts. This area requires you to be signed in.
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+<div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-6">
+  <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    
+    <!-- Name -->
+    <label class="flex flex-col">
+      <span class="text-sm font-medium text-gray-700 mb-1">Name</span>
+      <input
+        type="text"
+        formControlName="name"
+        placeholder="Jane Doe"
+        class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+      />
+    </label>
+
+    <!-- Age -->
+    <label class="flex flex-col">
+      <span class="text-sm font-medium text-gray-700 mb-1">Age</span>
+      <input
+        type="text"
+        formControlName="age"
+        placeholder="30"
+        class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+      />
+    </label>
+
+    <!-- Address -->
+    <label class="flex flex-col">
+      <span class="text-sm font-medium text-gray-700 mb-1">Address</span>
+      <input
+        type="text"
+        formControlName="address"
+        placeholder="123 Main St"
+        class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+      />
+    </label>
+
+    <!-- Username -->
+    <label class="flex flex-col">
+      <span class="text-sm font-medium text-gray-700 mb-1">Username</span>
+      <input
+        type="text"
+        formControlName="username"
+        placeholder="jane.doe"
+        class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+      />
+    </label>
+
+    <!-- Password (full width) -->
+    <label class="flex flex-col md:col-span-2">
+      <span class="text-sm font-medium text-gray-700 mb-1">Password</span>
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="••••••••"
+        class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+      />
+    </label>
+
+    <!-- Error / Success Messages -->
+    <div class="md:col-span-2">
+      @if (error) {
+        <p class="text-sm text-red-600 font-medium">{{ error }}</p>
+      }
+      @if (statusMessage && !error) {
+        <p class="text-sm text-green-600 font-medium">{{ statusMessage }}</p>
+      }
+    </div>
+
+    <!-- Actions -->
+    <div class="md:col-span-2 flex justify-end">
+      <button
+        type="submit"
+        class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-sm hover:bg-blue-700 transition cursor-pointer"
+      >
+        Submit
+      </button>
+    </div>
+    
+  </form>
+</div>
+
+
+  <!-- Panel -->
+  <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <!-- Table Header -->
+    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+      <h2 class="text-lg font-semibold text-gray-900">Users Table</h2>
+
+      @if (isLoadingUsers) {
+        <span class="text-xs font-medium px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+          Loading…
+        </span>
+      }
+    </div>
+
+    <!-- Empty State -->
+    @if (!isLoadingUsers && users.length === 0) {
+      <div class="px-6 py-10 text-center">
+        <p class="text-sm text-gray-500">
+          No users found. Add one using the form above.
+        </p>
+      </div>
+    }
+
+    <!-- Table -->
+    @if (users.length > 0) {
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 text-gray-600">
+            <tr class="text-left">
+              <th class="px-6 py-3 font-semibold">Name</th>
+              <th class="px-6 py-3 font-semibold">Username</th>
+              <th class="px-6 py-3 font-semibold">Age</th>
+              <th class="px-6 py-3 font-semibold">Address</th>
+              <th class="px-6 py-3 font-semibold">Password (hash)</th>
+              <th class="px-6 py-3 font-semibold text-right">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y divide-gray-200">
+            <tr
+              *ngFor="let user of users"
+              class="hover:bg-gray-50 transition"
+            >
+              <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                {{ user.name }}
+              </td>
+
+              <td class="px-6 py-4 text-gray-700 whitespace-nowrap">
+                {{ user.username }}
+              </td>
+
+              <td class="px-6 py-4 text-gray-700 whitespace-nowrap">
+                {{ user.age }}
+              </td>
+
+              <td class="px-6 py-4 text-gray-700 min-w-[220px]">
+                {{ user.address }}
+              </td>
+
+              <td class="px-6 py-4 text-gray-600">
+                <span class="block max-w-[280px] truncate font-mono text-xs bg-gray-100 px-3 py-2 rounded-lg border border-gray-200">
+                  {{ user.passwordHash ?? '(not available)' }}
+                </span>
+              </td>
+
+              <td class="px-6 py-4">
+                <div class="flex justify-end gap-2">
+                  <!-- Edit -->
+                  <button
+                    type="button"
+                    class="px-3 py-1.5 rounded-lg text-xs font-medium border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+                  >
+                    Edit
+                  </button>
+
+                  <!-- Delete -->
+                  <button
+                    type="button"
+                    class="px-3 py-1.5 rounded-lg text-xs font-medium border border-red-200 text-red-600 hover:bg-red-50 transition"
+                    (click)="handleDelete(user)"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>
+
+
+
 </section>
+
+
 
 <app-footer-component/>
