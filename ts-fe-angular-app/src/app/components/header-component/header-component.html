@@ -1,8 +1,13 @@
 <header>
   <nav class="w-full bg-[#333] text-white px-6 py-4 shadow-md">
     <div class="max-w-6xl mx-auto flex items-center justify-between">
-      <div class="text-xl font-bold cursor-pointer">MyApp</div>
+      
+      <!-- Logo -->
+      <div class="text-xl font-bold cursor-pointer" routerLink="/home">
+        MyApp
+      </div>
 
+      <!-- Nav Links -->
       <ul class="hidden md:flex gap-6 font-medium">
         <li
           routerLink="/home"
@@ -12,6 +17,7 @@
         >
           Home
         </li>
+
         <li
           routerLink="/todos"
           routerLinkActive="bg-blue-600 text-white"
@@ -21,12 +27,42 @@
         </li>
       </ul>
 
-      <button
-        class="hidden md:block cursor-pointer px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition"
-        (click)="logout()"
-      >
-        Logout
-      </button>
+      <!-- Profile Dropdown -->
+      <div class="relative profile-dropdown">
+        
+        <!-- Profile Image Button -->
+        <button
+          (click)="toggleDropdown()"
+          class="flex items-center gap-2 focus:outline-none"
+        >
+          <img
+            src="https://i.pravatar.cc/40"
+            alt="Profile"
+            class="w-10 h-10 rounded-full border border-gray-300 cursor-pointer"
+          />
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div
+          *ngIf="isDropdownOpen"
+          class="absolute right-0 mt-2 w-48 bg-white text-gray-800 border rounded-xl shadow-lg overflow-hidden z-50"
+        >
+          <button
+            (click)="goToManageUser()"
+            class="w-full text-left px-4 py-3 hover:bg-gray-100 text-sm"
+          >
+            Manage User
+          </button>
+
+          <button
+            (click)="logout()"
+            class="w-full text-left px-4 py-3 hover:bg-red-50 text-sm text-red-600"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+
     </div>
   </nav>
 </header>
