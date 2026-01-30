@@ -46,13 +46,19 @@ ng test
 
 ## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+End-to-end coverage is handled by [Cypress](https://www.cypress.io/). The tests stub the backend API, so you only need the Angular dev server running locally.
 
 ```bash
-ng e2e
+# Terminal 1
+npm start
+
+# Terminal 2
+npm run cy:run     # headless (records video)
+# or
+npm run cy:open    # interactive runner (preview only, no video)
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Cypress stores screenshots for every test run in `cypress/screenshots/` and videos for each `cy:run` execution in `cypress/videos/` so you can review what happened after executing the suite.
 
 ## Additional Resources
 

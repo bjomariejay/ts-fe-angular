@@ -1,0 +1,6 @@
+
+
+1. test with browser
+  npx cypress open
+2. test with specific files
+  npx cypress run --spec "cypress/e2e/home.cy.ts"

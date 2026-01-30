@@ -35,7 +35,7 @@ export class ManageUserComponent {
   });
 
       private async loadUsers() {
-    this.isLoadingUsers = true;``
+    this.isLoadingUsers = true;
     try {
       this.usersSignal.set(await this.userService.getUsers());
       console.log('user list', this.usersSignal)
