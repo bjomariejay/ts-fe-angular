@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import { HeaderComponent } from '../header-component/header-component';
 import { FooterComponent } from '../footer-component/footer-component';
 import { AppUser } from '../../models/user.model';
@@ -16,9 +16,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class ManageUserComponent {
     protected isLoadingUsers = true;
-    protected users: AppUser[] = [];
+    // protected users: AppUser[] = [];
     private readonly userService = inject(UserService);
-    
+
+    protected usersSignal = signal<AppUser[]>([]);
+
     protected error = '';
     protected statusMessage = '';
 
@@ -33,10 +35,10 @@ export class ManageUserComponent {
   });
 
       private async loadUsers() {
-    this.isLoadingUsers = true;
+    this.isLoadingUsers = true;``
     try {
-      this.users = await this.userService.getUsers();
-      console.log('user list', this.users)
+      this.usersSignal.set(await this.userService.getUsers());
+      console.log('user list', this.usersSignal)
     } catch (error) {
       console.error(error);
       this.error = 'Unable to load users. Please try again.';
@@ -76,9 +78,9 @@ export class ManageUserComponent {
           username: username.trim(),
           password
         });
-        this.users = [...this.users, created];
+        this.usersSignal.set([...this.usersSignal(), created]);
         this.statusMessage = 'User created successfully. You can now sign in with this account.';
-    
+
   }
 
     async handleDelete(user: AppUser) {
@@ -89,7 +91,7 @@ export class ManageUserComponent {
 
     try {
       await this.userService.deleteUser(user.id);
-      this.users = this.users.filter(existing => existing.id !== user.id);
+      this.usersSignal.set(this.usersSignal().filter(existing => existing.id !== user.id));
       // if (this.editingId === user.id) {
       //   this.resetForm();
       // }
@@ -99,5 +101,5 @@ export class ManageUserComponent {
       // this.error = this.extractServerMessage(error) ?? 'Unable to delete user.';
     }
   }
-  
+
 }
